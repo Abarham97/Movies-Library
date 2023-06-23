@@ -4,7 +4,7 @@
 **Author Name**: Abdelkareem Barham
 
 ## WRRC
-![Alt text](moviepic.png)
+![Alt text](./assetss/moviepic.png)
 
 ## Overview
 
