@@ -22,22 +22,32 @@ res.send({
 })
 }//not found function
 
+function  Movie(title,poster_path,overview){
+
+this.title=title;
+this.poster_path=poster_path;
+this.overview=overview;
+   
+}//Constructor
+
+
 function handelAllMovie(req,res){
+    let movie= new Movie(movieData.overview,movieData.poster_path,movieData.overview);
+    
+    res.send(movie);
 
 
-    let newArray=[];
-    newArray.push(movieData.title)
-    newArray.push(movieData.poster_path)
-    newArray.push(movieData.overview)
-    console.log("allmovieData");
-    res.send(newArray);
+}//function handelAllMovie
 
-}//Function HandelAllMovie
+    
+
 
 function favoritePage(req,res){
 
     res.send("Welcome to Favorite Page")
 }//favoritePage function
+
+
 
 //localhost:3000/home
 app.get('/home', handelAllMovie)//Home Route
