@@ -3,6 +3,8 @@ let express = require("express");  //to require all express inside the variable 
 
 let axios = require("axios");//to require all axios inside the variable axios
 
+let pg= require("pg");
+
 let app = express();// to make app access express functions 
 
 app.use(express.json());
