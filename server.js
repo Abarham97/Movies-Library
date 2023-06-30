@@ -3,11 +3,24 @@ let express = require("express");  //to require all express inside the variable 
 
 let axios = require("axios");//to require all axios inside the variable axios
 
+let pg= require("pg");
+
 let app = express();// to make app access express functions 
 
 app.use(express.json());
 
 let movieData =require ("./data.json");//requir JSON data to variable
+
+const url=DATABASE_URL;
+const {client}=require('pg');
+const client=new client(url);
+
+client.connect().then(() => {
+
+    app.listen(PORT, () => {
+        console.log(`Server is listening ${PORT}`);
+    });
+})
 
 function startingLogs(req, res) {
 
@@ -15,7 +28,11 @@ function startingLogs(req, res) {
 }//startingLogs function
 
 
-app.listen(3000, startingLogs);//to start our Server
+
+
+
+// app.listen(3000, startingLogs);//to start our Server
+
 
 
 
@@ -35,6 +52,30 @@ this.overview=overview;
 
    
 }//Constructor
+
+app.post("/addMovie", (req, res) => {
+    let id = req.body.i;
+    let title = req.body.t;
+    let release_date = req.body.r;
+    let overview = req.body.o;
+
+    let sql = `insert into movie(id,title,release_date,overview) values($1,$2,$3,$4)`;
+  client.query(sql, [id, title, release_date, overview]).then(() => {
+    res.status(201).send(`movie ${title} added to database`);
+  });
+
+});
+
+
+
+app.get("/getOneMovie", (req, res) => {
+    let id = req.query.id;
+    let sql = `SELECT * From movie where id=${id}`;
+    client.query(sql).then((movieData) => {
+      res.status(200).send(movieData.rows);
+    });
+  });
+
 
 
 function handelAllMovie(req,res){
