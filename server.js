@@ -69,7 +69,8 @@ app.post("/addMovie", (req, res) => {
 
 
 app.get("/getOneMovie", (req, res) => {
-    let sql = `SELECT * From movie`;
+  let id = req.query.id;
+    let sql = `SELECT * From movie where id=${id}`;
     client.query(sql).then((movieData) => {
       res.status(200).send(movieData.rows);
     });
