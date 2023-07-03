@@ -10,15 +10,16 @@ let app = express();// to make app access express functions
 app.use(express.json());
 
 let movieData =require ("./data.json");//requir JSON data to variable
-
-const url=DATABASE_URL;
-const {client}=require('pg');
-const client=new client(url);
+require("dotenv").config();
+const url=process.env.DATABASE_URL;
+const port=process.env.PORT;
+const {Client}=require('pg');
+const client=new Client(url);
 
 client.connect().then(() => {
 
-    app.listen(PORT, () => {
-        console.log(`Server is listening ${PORT}`);
+    app.listen(port, () => {
+        console.log(`Server is listening ${port}`);
     });
 })
 
@@ -54,14 +55,14 @@ this.overview=overview;
 }//Constructor
 
 app.post("/addMovie", (req, res) => {
-    let id = req.body.i;
-    let title = req.body.t;
-    let release_date = req.body.r;
-    let overview = req.body.o;
+   
+    let Name = req.body.Name;
+    let release_date = req.body.release_date;
+    let overview = req.body.overview;
 
-    let sql = `insert into movie(id,title,release_date,overview) values($1,$2,$3,$4)`;
-  client.query(sql, [id, title, release_date, overview]).then(() => {
-    res.status(201).send(`movie ${title} added to database`);
+    let sql = `insert into movie(Name,release_date,overview) values($1,$2,$3)`;
+  client.query(sql, [ Name, release_date, overview]).then(() => {
+    res.status(201).send(`movie ${Name} added to database`);
   });
 
 });
@@ -70,11 +71,14 @@ app.post("/addMovie", (req, res) => {
 
 app.get("/getOneMovie", (req, res) => {
   
-    let sql = `SELECT * From movie}`;
+    let sql = `SELECT * From movie`;
     client.query(sql).then((movieData) => {
       res.status(200).send(movieData.rows);
     });
   });
+
+
+  
 
 
 
