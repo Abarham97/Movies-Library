@@ -100,7 +100,7 @@ app.get("/getAllMovie", (req, res) => {
     
     });
   });
-
+//update
 
   app.delete("/deleteMovie/:id", async (req, res) => {
     try {
