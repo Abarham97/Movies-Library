@@ -59,9 +59,9 @@ app.post("/addMovie", (req, res) => {
     let Name = req.body.Name;
     let release_date = req.body.release_date;
     let overview = req.body.overview;
-
-    let sql = `insert into movie(Name,release_date,overview) values($1,$2,$3)`;
-  client.query(sql, [ Name, release_date, overview]).then(() => {
+    let poster_path=req.body.poster_path;
+    let sql = `insert into movie(Name,release_date,poster_path,overview) values($1,$2,$3,$4)`;
+  client.query(sql, [ Name, release_date,poster_path, overview]).then(() => {
     res.status(201).send(`movie ${Name} added to database`);
   });
 
@@ -69,12 +69,48 @@ app.post("/addMovie", (req, res) => {
 
 
 
-app.get("/getOneMovie", (req, res) => {
+app.get("/getAllMovie", (req, res) => {
   
     let sql = `SELECT * From movie`;
     client.query(sql).then((movieData) => {
       res.status(200).send(movieData.rows);
     });
+  });
+  app.get("/getOneMovie/:id", (req, res) => {
+    let id = req.query.id;
+    let sql = `SELECT * From movie where id=${req.params.id}`;
+    client.query(sql).then((movieData) => {
+      res.status(200).send(movieData.rows);
+    });
+  });
+
+
+  app.put("/updateMovie/:id", (req, res) => {
+    let { newOverview } = req.body.overview;
+    let sqlOne = `SELECT * FROM movie WHERE id=${req.params.id}`;
+  
+    client.query(sqlOne).then((movieData) => {
+      const {Name,release_date,poster_path,overview} = movieData.rows[0];
+      let sqlTwo = ` UPDATE movie SET overview=$1 WHERE id=${req.params.id}`;
+
+
+      client.query(sqlTwo, [overview+newOverview]).then((data) => {
+        res.status(200).send(`Updated`);
+      });
+    
+    });
+  });
+//update
+
+  app.delete("/deleteMovie/:id", async (req, res) => {
+    try {
+      let { id } = req.params;
+      let sql = `DELETE FROM movie WHERE id =${req.params.id}`;
+      let data = await client.query(sql);
+      res.status(204).end();
+    } catch (e) {
+      next("deletemovie " + e);
+    }
   });
 
 
