@@ -62,7 +62,7 @@ app.post("/addMovie", (req, res) => {
     let poster_path=req.body.poster_path;
     let sql = `insert into movie(Name,release_date,poster_path,overview) values($1,$2,$3,$4)`;
   client.query(sql, [ Name, release_date,poster_path, overview]).then(() => {
-    res.status(201).send(`moviebd ${Name} added to database`);
+    res.status(201).send(`movie ${Name} added to database`);
   });
 
 });
