@@ -131,7 +131,9 @@ async function handleAllTrending (req,res){
     let response = await axios({url:"https://api.themoviedb.org/3/trending/all/week?api_key=0f6a06711e855e209abf2719cd7eedb5&language=en-US"});
     // console.log(response);
    let resolved= response.data.results.map(data=>new Movie(data.id,data.title,data.release_date,data.poster_path,data.overview));
+   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.send(resolved);
+
 
     // console.log(response);
 
