@@ -167,7 +167,7 @@ async function getMovieById(req,res){
 }
 
 
-
+app.use(cors());
     
 
 
